@@ -25,4 +25,4 @@ This script uses the following Python modules:
 - pandas
 
 ## Note
-- This script assumes that your Spotify playlist has been exported as a CSV file using the [export feature](https://github.com/joosefupas/spotisave) code, but feel free to modify the names of your track artist and track name accordingly.
+- This script assumes that your music playlist has been exported as a CSV file using the [Spotisave](https://github.com/joosefupas/spotisave) code, but it's not limited to such format hence feel free to modify the names of your track artist and track name accordingly.
