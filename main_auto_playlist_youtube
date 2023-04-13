@@ -1,0 +1,82 @@
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+import googleapiclient.errors
+import pandas as pd
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+
+# Define the credentials for the YouTube Data API v3
+CLIENT_SECRETS_FILE = "client_secret.json" # modify path accordingly
+SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
+API_SERVICE_NAME = 'youtube'
+API_VERSION = 'v3'
+
+# Define the function to get the credentials for the YouTube Data API v3
+def get_credentials():
+    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
+    credentials = flow.run_console()
+    return credentials
+
+# Define the function to create a new YouTube playlist
+def create_playlist(youtube, title, description):
+    playlist = youtube.playlists().insert(
+        part='snippet,status',
+        body={
+            'snippet': {
+                'title': title,
+                'description': description
+            },
+            'status': {
+                'privacyStatus': 'public'
+            }
+        }
+    ).execute()
+    return playlist['id']
+
+# Define the function to add a video to a YouTube playlist
+def add_video_to_playlist(youtube, video_id, playlist_id):
+    youtube.playlistItems().insert(
+        part='snippet',
+        body={
+            'snippet': {
+                'playlistId': playlist_id,
+                'resourceId': {
+                    'kind': 'youtube#video',
+                    'videoId': video_id
+                }
+            }
+        }
+    ).execute()
+
+# Load the DataFrame with the title and artist name
+data = pd.read_csv("xxxx.csv") # or from whatever the source
+
+# Authenticate with the YouTube Data API v3
+flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE,SCOPES)
+credentials = flow.run_local_server(port=0)
+youtube = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
+#########################################################################################################
+# Create a new YouTube playlist
+title_new_playlist='xxxxx' # insert name of your new youtube playlist accordingly
+description = 'xxxxx' # insert description of your new youtube playlist accordingly
+playlist_id = create_playlist(youtube, title=title_new_playlist, description=description)
+
+# Filter the DataFrame for 'playlist' = title value
+# This step it's not necessary if you have only one playlist in your data object 
+data_sub = data[data['playlist_name'] == title_new_playlist]
+
+
+# Loop through the filtered DataFrame and add each video to the YouTube playlist
+for index, row in data_sub.iterrows():
+    title = row['track.name'] # check on your df and modify accordingly
+    artist = row['artist_name'] # check on your df and modify accordingly
+    query = f'{title} {artist}'
+    search_response = youtube.search().list(
+        q=query,
+        part='id',
+        videoDefinition='high',
+        type='video'
+    ).execute()
+    video_id = search_response['items'][0]['id']['videoId']
+    add_video_to_playlist(youtube, video_id, playlist_id)
