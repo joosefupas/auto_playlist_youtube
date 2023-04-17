@@ -3,8 +3,7 @@ This is a Python script that creates a new public YouTube playlist and adds the 
 
 ## Setup
 Before using this script, please make sure you have the following:
-- A Spotify account
-- A Google account with access to the YouTube Data API v3
+- A Google account with access to the YouTube Data API v3 [For more details](https://developers.google.com/youtube/v3/getting-started)
 - Python 3 installed
 - Client secrets file downloaded from the Google Cloud Console and saved to your local machine
 
