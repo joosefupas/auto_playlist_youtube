@@ -11,10 +11,10 @@ Before using this script, please make sure you have the following:
 1. Clone this repository to your local machine.
 2. Open the script in a code editor of your choice and make sure to update the following:
    - CLIENT_SECRETS_FILE: the path to your client secrets file
-   - title_spotify: the name of the Spotify playlist you want to convert to a YouTube playlist
+   - title_playlist: the name of the playlist you want to convert to a YouTube playlist
    - description: the description you want for your new YouTube playlist
    - query: the search query used to find the video on YouTube
-   - title and artist: the columns in your Spotify playlist CSV containing the track and artist names
+   - title and artist: the columns in your playlist CSV containing the track and artist names
 3. Run the script.
 
 ## Dependencies
