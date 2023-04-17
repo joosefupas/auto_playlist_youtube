@@ -1,5 +1,5 @@
 # YouTube Automatic Playlist Uploader
-This is a Python script that creates a new public YouTube playlist and adds the most played tracks from a Spotify playlist to it.
+This is a Python script that creates a new public YouTube playlist from a user's .csv/playlist.
 
 ## Setup
 Before using this script, please make sure you have the following:
